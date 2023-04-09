@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\ResourcesRepository;
+use App\Repository\ResourceRepository;
 use App\Trait\DescriptionTrait;
 use App\Trait\IdTrait;
 use App\Trait\IdentifierTrait;
@@ -10,8 +10,8 @@ use App\Trait\IsActiveTrait;
 use App\Trait\TimestampsTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ResourcesRepository::class)]
-class Resources
+#[ORM\Entity(repositoryClass: ResourceRepository::class)]
+class Resource
 {
     use IdTrait;
     use DescriptionTrait;

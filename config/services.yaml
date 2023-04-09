@@ -19,6 +19,16 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Listener\UniqueIdentifierListener:
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, method: prePersist }
+
+    App\Listener\TimestampsListener:
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

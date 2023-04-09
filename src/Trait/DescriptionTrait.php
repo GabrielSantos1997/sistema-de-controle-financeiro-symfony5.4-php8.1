@@ -23,7 +23,7 @@ trait DescriptionTrait
 
     public function setDescription(string $description): self
     {
-        $this->description = $this->$description;
+        $this->description = $description;
 
         return $this;
     }
