@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Resource;
-use App\Form\TypeFactory\ResourceTypeFactory;
+use App\Form\Type\ResourceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/resource', name: 'app_resource')]
 class ResourceController extends AbstractController
@@ -31,6 +31,28 @@ class ResourceController extends AbstractController
     }
 
     #[Route(
+        '/{identifier}/show',
+        name: 'show',
+        methods: ['GET'],
+        requirements: ['identifier' => '[\w\-\_]{15}']
+    )]
+    public function showAction(
+        string $identifier = ''
+    ): Response {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository(Resource::class)->findOneByIdentifier($identifier);
+        if (!$entity) {
+            return $this->json([
+                'message' => 'Recurso não encontrado',
+                'success' => false,
+            ], 404);
+        }
+
+        return $this->json($entity, 200);
+    }
+
+    #[Route(
         '/new',
         name: 'new',
         methods: ['POST'],
@@ -40,21 +62,21 @@ class ResourceController extends AbstractController
     ): Response {
         $entity = new Resource;
 
-        $form = $this->createForm(ResourceTypeFactory::class, $entity);
+        $form = $this->createForm(ResourceType::class, $entity);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
             return $this->json([
                 'message' => 'Dados do formulário inválidos',
                 'success' => false,
-            ], 404);
+            ], 400);
         }
 
         if (!$form->isValid()) {
             return $this->json([
                 'errors' => $form->getErrors(true, false),
                 'success' => false,
-            ], 404);
+            ], 400);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -86,21 +108,21 @@ class ResourceController extends AbstractController
             ], 404);
         }
 
-        $form = $this->createForm(ResourceTypeFactory::class, $entity);
+        $form = $this->createForm(ResourceType::class, $entity);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
             return $this->json([
                 'message' => 'Dados do formulário inválidos',
                 'success' => false,
-            ], 404);
+            ], 400);
         }
 
         if (!$form->isValid()) {
             return $this->json([
                 'errors' => $form->getErrors(true, false),
                 'success' => false,
-            ], 404);
+            ], 400);
         }
 
         $em->persist($entity->setUpdatedAt(new \DateTime()));
@@ -132,7 +154,7 @@ class ResourceController extends AbstractController
         $em->flush();
 
         return $this->json([
-            'message' => 'Recurso apagado com sucesso',
+            'message' => 'Recurso removido com sucesso',
         ], 200);
     }
 }

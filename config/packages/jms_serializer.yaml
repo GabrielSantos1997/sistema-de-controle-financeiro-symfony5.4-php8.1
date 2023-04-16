@@ -1,0 +1,17 @@
+jms_serializer:
+    visitors:
+        xml_serialization:
+            format_output: '%kernel.debug%'
+    handlers:
+        datetime:
+            default_format: "Y-m-d H:i:s"
+    property_naming:
+        id: jms_serializer.identical_property_naming_strategy
+    metadata:
+        auto_detection: true
+        directories:
+            app:
+                namespace_prefix: "App"
+                path: "%kernel.project_dir%/config/serializer"
+    expression_evaluator:
+        id: jms_serializer.expression_evaluator

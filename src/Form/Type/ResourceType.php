@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\TypeFactory;
+namespace App\Form\Type;
 
 use App\Entity\Resource;
 use Symfony\Component\Form\AbstractType;
@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as CoreType;
 
-class ResourceTypeFactory extends AbstractType
+class ResourceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
